@@ -5,8 +5,11 @@ stages:
     deps:
     - path: src/data_ingestion.py
       hash: md5
-      md5: 2e826254d0066c399dda3344b3edbfb0
-      size: 2988
+      md5: c0211b5dd1d7f1161932cbf350b9dabf
+      size: 3650
+    params:
+      params.yaml:
+        data_ingestion.test_size: 0.2
     outs:
     - path: data/raw
       hash: md5
@@ -41,44 +44,51 @@ stages:
       nfiles: 2
     - path: src/feature_engg.py
       hash: md5
-      md5: 55f2a782a675c83f34caabae82954c6c
-      size: 3245
+      md5: 3b1982328a0785484f176f11d8dd04ed
+      size: 3912
+    params:
+      params.yaml:
+        feature_engg.max_features: 35
     outs:
     - path: data/processed
       hash: md5
-      md5: c0d85ddb7ab99b6171fc723bffeee71f.dir
-      size: 1180012
+      md5: 1c21480115da0aa2cf7b71f23ac6d82b.dir
+      size: 834746
       nfiles: 2
   model_training:
     cmd: python src/model_training.py
     deps:
     - path: data/processed
       hash: md5
-      md5: c0d85ddb7ab99b6171fc723bffeee71f.dir
-      size: 1180012
+      md5: 1c21480115da0aa2cf7b71f23ac6d82b.dir
+      size: 834746
       nfiles: 2
     - path: src/model_training.py
       hash: md5
-      md5: a05d07210edc1caa3c0095f0cdc81f9f
-      size: 3855
+      md5: 81dd3dfe7343704c51705de2fa92612f
+      size: 4424
+    params:
+      params.yaml:
+        model_training.n_estimators: 22
+        model_training.random_state: 2
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 3e885645725498b3261b28e252c3fddc
-      size: 899326
+      md5: 41131e7cc9e56a625bb6066a6b2e13b3
+      size: 648754
   model_evaluation:
     cmd: python src/model_evaluation.py
     deps:
     - path: models/model.pkl
       hash: md5
-      md5: 3e885645725498b3261b28e252c3fddc
-      size: 899326
+      md5: 41131e7cc9e56a625bb6066a6b2e13b3
+      size: 648754
     - path: src/model_evaluation.py
       hash: md5
-      md5: 630292dcf4b9c7123df0e7abf4337d6e
-      size: 3656
+      md5: 352c6a9de3a4ed23d1e30d9e76d2d4bf
+      size: 4274
     outs:
     - path: reports/metrics.json
       hash: md5
-      md5: eac6afc8901064a391e7366797af3727
+      md5: abba219d58644dde3de017d8eedbd8b8
       size: 145
